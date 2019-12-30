@@ -1,0 +1,7 @@
+# vim: ts=8
+#
+# This file determines the user IDs / tag data files
+# Lines that that with a # are comments.
+# I generally use UUIDs for the tag file names
+
+Bob	df258c90-145e-4755-87f7-a231905a4ad6

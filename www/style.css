@@ -1,0 +1,32 @@
+svg
+{
+	font-family: sans-serif;
+	font-size: 8pt;
+}
+
+path
+{
+	stroke: #ccc;
+}
+
+@media (prefers-color-scheme: dark) {
+	text
+	{
+		fill: #fff;
+	}
+}
+
+path.busy
+{
+	fill: rgba( 255, 0, 0, 0.5 );
+}
+
+path.moveable
+{
+	fill: rgba( 255, 255, 0, 0.5 );
+}
+
+path.withyou
+{
+	fill: rgba( 0, 0, 255, 0.5 );
+}

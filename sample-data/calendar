@@ -1,0 +1,24 @@
+# Events are stored as a time and a title
+# The title is removed from the outputted public calendar
+# but is scanned for matching tags in the `tags` file.
+
+# The date is in third-day format -- [year]-[month]-[day]-[slot],
+# with [slot] being one or more of [M]orning, [A]fternoon, or [E]vening.
+# If no slot is given, then it is assumed to span all three slots.
+# If the date ends in '?', then the event is marked as moveable rather
+# than busy.
+
+# If a title is '--', then this is the start data of a
+# multi-day event, with the next line containing the
+# end date and the title.
+
+# Example one: new year's at bobs, an evening event
+# This should pick up the 'bob' tag in the 'tags' file.
+2019-12-31-E  New Year's at Bobs
+
+# Example two: moveable all day event
+2020-01-01-?  Sleeeepp
+
+# A longer holiday, leaving in the afternoon, coming back the next night
+2020-01-04-A  --
+2020-01-05-E  Weekend away

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+
+		<style>body{font-size:17.4px;line-height:1.3;font-family:Helvetica,Arial,sans-serif;font-weight:100;max-width:44rem;margin:0 auto;padding:0 2em;background:#ddd;}h1,h2,h3{font-family:Candara,Calibri,Helvetica,Arial,sans-serif;font-weight:normal;margin: 0 0 1rem 0;}p,ul{text-align:justify;margin:0 0 1rem;}code{display:none;}p code{display:initial;}</style>
+
+		<link rel="preload" as="style" href="https://static.harcourtprogramming.co.uk/shared/2018.css" />
+		<link rel="preload" as="style" href="https://static.harcourtprogramming.co.uk/shared/2018-print.css" />
+		<link rel="preload" as="script" crossorigin="anonymous" href="config.js" />
+		<link rel="preload" as="script" crossorigin="anonymous" href="events.js" />
+		<link rel="preload" as="script" crossorigin="anonymous" href="dates.js" />
+		<link rel="preload" as="style" media="all" href="style.css" onload="this.rel='stylesheet'" />
+
+		<title>KittehCal</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="description" content="Kitteh's Calendar" />
+		<meta name="theme-color" content="#888888" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="#888888" />
+		<meta name="apple-mobile-web-app-title" content="KittehCal" />
+
+		<link rel="manifest" crossorigin="use-credentials" href="./manifest.json" />
+		<link rel="stylesheet" media="all" href="https://static.harcourtprogramming.co.uk/shared/2018.css" />
+		<link rel="stylesheet" media="print" href="https://static.harcourtprogramming.co.uk/shared/2018-print.css" />
+		<link rel="icon" sizes="192x192" href="icon.png" />
+		<link rel="apple-touch-icon" href="icon.png" />
+
+		<script type="module" src="calendar.js" async></script>
+	</head>
+	<body>
+		<noscript>This page requires JavaScript</noscript>
+		<p>
+			Kitt's availability.
+			Each day is divided into Morning, Afternoon, and Evening,
+			with time blocked as 'busy' (red) for planned events and
+			'moveable' (yellow) for things that can (with notice) be
+			offset (such as work and regular events).
+		</p>
+		<p>The current week is highlighted in blue.</p>
+		<script>
+			navigator.serviceWorker.register( './worker.js' )
+				.catch( e =>
+				{
+					document.body.appendChild( document.createTextNode( e.toString() ) );
+					throw e;
+				}
+			);
+		</script>
+	</body>
+</html>

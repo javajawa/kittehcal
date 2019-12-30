@@ -1,0 +1,11 @@
+# This is a list of days for which 'normal' events should not be generated.
+# These must be valid ISO dates (and not third-days).
+# Comments are lines starting with #.
+
+# Christmas 2019
+2019-12-25
+2019-12-26
+2019-12-29
+2019-12-30
+2019-12-31
+2020-01-01
