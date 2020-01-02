@@ -26,14 +26,14 @@ self.addEventListener( 'install', e =>
 	e.waitUntil(
 		codeFiles.forEach( url => {
 			console.log( 'Caching file ' + url );
-			fetch( url ).then( r => cacheResponse( url, r ) );
+			fetch( url, { cache: "no-cache" } ).then( r => cacheResponse( url, r ) );
 		} )
 	);
 
 	e.waitUntil(
 		dataFiles.forEach( url => {
 			console.log( 'Caching file ' + url );
-			fetch( url ).then( r => cacheResponse( url, r ) );
+			fetch( url, { cache: "no-cache" } ).then( r => cacheResponse( url, r ) );
 		} )
 	);
 } );
@@ -80,14 +80,14 @@ self.addEventListener( 'fetch', e =>
 			{
 				console.log( 'Using cache for', url );
 
-				fetch( url )
+				fetch( url, { cache: "no-cache" } )
 					.then( r => cacheResponse( url, r ) )
 					.catch( console.error );
 
 				return cached;
 			}
 
-			console.log( 'Short-Fetching', url );
+			console.log( 'Short-Fetching data resource', url );
 
 			return _fetch( e.request )
 				.then( rsp => { console.log( 'Fetched and caching ', url ); return rsp; } )
@@ -101,7 +101,7 @@ const cacheResponse = ( req, rsp ) => caches.open( cacheName )
 	.then( cache => cache.put( req, rsp.clone() ) )
 	.then( () => rsp );
 
-const _fetch = url => timeout( fetch( url, { mode: 'cors', credentials: 'omit' } ), 1500 );
+const _fetch = url => timeout( fetch( url, { mode: 'cors', credentials: 'omit', cache: "no-cache" } ), 1500 );
 
 const timeout =	( promise, ms ) => new Promise( ( accept, reject ) => {
 	setTimeout( () => reject( new Error( `timed out after ${ms}ms` ) ), ms );
