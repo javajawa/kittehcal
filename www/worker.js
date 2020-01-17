@@ -73,7 +73,7 @@ self.addEventListener( 'fetch', e =>
 			{
 				console.log( 'Long-Fetching', url );
 
-				return fetch( e.request ).then( rsp => cacheResponse( e.request, rsp ) )
+				return fetch( e.request, { cache: "no-cache" } ).then( rsp => cacheResponse( e.request, rsp ) )
 			}
 
 			if ( codeFiles.includes( url ) )
@@ -87,7 +87,7 @@ self.addEventListener( 'fetch', e =>
 				return cached;
 			}
 
-			console.log( 'Short-Fetching data resource', url );
+			console.log( 'Short-Fetching', url );
 
 			return _fetch( e.request )
 				.then( rsp => { console.log( 'Fetched and caching ', url ); return rsp; } )
