@@ -11,7 +11,7 @@ from third_days import from_date, ThirdDay
 
 
 def get_holidays(start: date, end: date) -> Generator[date, None, None]:
-    with open('holidays', 'r') as holidays_in:
+    with open('data/holidays', 'r') as holidays_in:
         for holiday in holidays_in.readlines():
             bits = holiday.strip().split('-', 2)
 

@@ -11,7 +11,7 @@ from third_days import earliest, latest
 def generator(start: date, end: date, tags: TagDict) -> EventList:
     i: int = 0
 
-    with open('calendar', 'r') as in_file:
+    with open('data/calendar', 'r') as in_file:
         while True:
             line: str = in_file.readline()
 

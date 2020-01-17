@@ -7,6 +7,8 @@ from typing import Dict, List
 from datetime import date, timedelta
 
 import json
+import os
+import os.path
 import itertools
 
 from event import Event, EventGenerator, EventJSONEncoder, TagDict
@@ -18,7 +20,7 @@ import regular_events
 def read_tags() -> TagDict:
     tags: TagDict = dict()
 
-    with open('tags', 'r') as tag_file:
+    with open('data/tags', 'r') as tag_file:
         while True:
             line = tag_file.readline()
 
@@ -61,13 +63,14 @@ def main():
 
         acc.append(event)
 
-    with open('data.json', 'w') as output:
+    with open('out/data.json', 'w') as output:
         json.dump(acc, output, indent=2, cls=EventJSONEncoder)
 
     for tag in tag_map:
-        with open(tag + '.json', 'w') as output:
+        with open('out/' + tag + '.json', 'w') as output:
             json.dump(tag_map[tag], output, indent=2)
 
 
 if __name__ == '__main__':
+    os.chdir(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
     main()
