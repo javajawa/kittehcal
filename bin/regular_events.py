@@ -142,9 +142,11 @@ def generator(start: date, end: date, tags: TagDict) -> EventList:
     holidays: List[date] = list(get_holidays(start, end))
     events: List[DateMatcher] = list(get_formats())
 
-    ptr: date = start
+    ptr: date = start - a_day
 
     while ptr < end:
+        ptr += a_day
+
         if ptr in holidays:
             continue
 
@@ -155,5 +157,3 @@ def generator(start: date, end: date, tags: TagDict) -> EventList:
                 event_tags = [tags[k] for k in tags if k in event.title.lower()]
 
                 yield simple_event(event.title, e_start, e_end, event_tags)
-
-        ptr += a_day
