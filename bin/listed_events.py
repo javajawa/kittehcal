@@ -40,6 +40,11 @@ def generator(start: date, end: date, tags: TagDict) -> EventList:
             if title.strip() == '--':
                 line = in_file.readline()
                 date_str, title = line.strip().split(' ', 1)
+
+                if date_str.endswith('?'):
+                    mode = EventType.MOVEABLE
+                    date_str = date_str[:-1]
+
                 end_date = latest(date_str)
 
             title = title.strip()
