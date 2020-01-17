@@ -129,6 +129,8 @@ def get_holidays(start: date, end: date) -> Generator[date, None, None]:
 
 
 def simple_event(name: str, start: ThirdDay, end: ThirdDay, tags=None) -> Event:
+    name, *_ = name.split(None, 1)
+
     return Event(
         name.lower() + '-' + str(start),
         name, start, end,
