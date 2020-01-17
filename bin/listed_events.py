@@ -7,22 +7,13 @@ from datetime import date
 
 from event import Event, EventType, TagDict, EventList
 from third_days import earliest, latest
+from utils import read_skip_comments
 
 def generator(start: date, end: date, tags: TagDict) -> EventList:
     i: int = 0
 
     with open('data/calendar', 'r') as in_file:
-        while True:
-            line: str = in_file.readline()
-
-            if not line:
-                break
-
-            line = line.strip()
-
-            if not line or line.startswith('#'):
-                continue
-
+        for line in read_skip_comments(in_file):
             date_str, title = line.strip().split(' ', 1)
 
             mode: EventType = EventType.BUSY

@@ -12,6 +12,7 @@ import os.path
 import itertools
 
 from event import Event, EventGenerator, EventJSONEncoder, TagDict
+from utils import read_skip_comments
 
 import listed_events
 import regular_events
@@ -21,24 +22,14 @@ def read_tags() -> TagDict:
     tags: TagDict = dict()
 
     with open('data/tags', 'r') as tag_file:
-        while True:
-            line = tag_file.readline()
-
-            if not line:
-                break
-
-            line = line.strip()
-
-            if not line or line.startswith('#'):
-                continue
-
+        for line in read_skip_comments(tag_file):
             name, uuid = line.strip().split('\t')
             tags[name.lower()] = uuid.lower()
 
     return tags
 
 
-def get_events(tags: TagDict) -> itertools.chain[Event]:
+def get_events(tags: TagDict) -> itertools.chain[Event]:  # pylint: disable=unsubscriptable-object
     start: date = date.today()
     end: date = start + timedelta(days=-start.weekday(), weeks=16)
     start = start + timedelta(days=-start.weekday(), weeks=-2)

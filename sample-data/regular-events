@@ -1,0 +1,18 @@
+# Work Mon-Fri every week, from Morning to Afternoon
+*-W*-1  M A Work
+*-W*-2  M A Work
+*-W*-3  M A Work
+*-W*-4  M A Work
+*-W*-5  M A Work
+
+# Thursdays are the pub with Bob
+*-W*-4  E E Pub w/Bob
+
+# The 7th of the month, regardless of day of week, is 'The Drive'
+*-*-7   A E The Drive
+
+# Not yet supported: second Tuesday is boardgames in the evening
+#*-*w2-2 E E Boardgames
+
+# Likewise, last Friday is work drinks.
+#*-*wl-5 E E Work Drinks
