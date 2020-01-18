@@ -4,7 +4,7 @@ build: out/data.json
 out/data.json: $(wildcard data/*)
 	mkdir -vp $(dir $@)
 	clear
-	bin/calendar.py
+	bin/calendar
 
 clean:
 	rm $(wildcard out/*.json)

@@ -1,3 +1,26 @@
+# ISO 8601 says that you can define a specific day in any or an unknown year
+# using either the week or month calendar in the format of:
+#
+#  --MM-DD  (month calendar)
+#  --Www-d  (week calendar)
+#
+# This file extends that to it's logical extreme, allowing any field to be
+# replaced with a single dash.
+#
+# For legibility reasons, the parse will convert all asterixes to dashes,
+# so "*-01-01" is equivalent to "--01-01", or the first day of the Gregorian year.
+#
+# Date formats accepted are:
+#
+#   <YYYY>-<MM>-<DD>      -- A specific Gregorian day.
+#   <YYYY>-W<ww>-<d>      -- A specific ISO Week-Calendar day.
+#   <YYYY>-<MM>-w<W>-<d>  -- A given day of week in a specific week of a month
+#
+# After this, there are three columns:
+#  - The starting time slot ([M]orning, [A]fternoon, [E]vening)
+#  - The ending time slot ([M]orning, [A]fternoon, [E]vening)
+#  - The event title and tags.
+
 # Work Mon-Fri every week, from Morning to Afternoon
 *-W*-1  M A Work
 *-W*-2  M A Work
@@ -12,7 +35,7 @@
 *-*-7   A E The Drive
 
 # Not yet supported: second Tuesday is boardgames in the evening
-#*-*w2-2 E E Boardgames
+*-*-w2-2 E E Boardgames
 
 # Likewise, last Friday is work drinks.
-#*-*wl-5 E E Work Drinks
+*-*-wl-5 E E Work Drinks

@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import calendar
 from datetime import date, timedelta
 from typing import List, Generator, Optional, Tuple
 
@@ -25,55 +26,62 @@ class DateMatcher:
     day: Optional[int] = None
 
     def __init__(self: DateMatcher, specifier: str, start: str, end: str, event: str):
-        self.title = event
-        self.slot_start = start
-        self.slot_end = end
+        try:
+            self.title = event
+            self.slot_start = start
+            self.slot_end = end
 
-        spec = specifier.replace('*', '-')
+            spec = specifier.replace('*', '-')
 
-        # The first element is the year
-        token, spec = self.next_token(spec)
-        self.year = int(token) if token else None
-
-        # After the year is either the ISO week,
-        # or the month number
-        if spec[0] == 'W':
-            token, spec = self.next_token(spec[1:])
-            self.iso_week = int(token) if token else None
-
-            token, spec = self.last_token(spec)
-            self.dow = int(token) if token else None
-
-        else:
+            # The first element is the year
             token, spec = self.next_token(spec)
+            self.year = int(token) if token else None
 
-            if token and token.contains('w'):
-                month, week = token.split('w')
-
-                self.month = int(month) if month != '-' else None
-                self.month_week = int(week) if week != 'l' else -1
+            # After the year is either the ISO week,
+            # or the month number
+            if spec[0] == 'W':
+                token, spec = self.next_token(spec[1:])
+                self.iso_week = int(token) if token else None
 
                 token, spec = self.last_token(spec)
                 self.dow = int(token) if token else None
 
             else:
+                token, spec = self.next_token(spec)
                 self.month = int(token) if token else None
 
-                token, spec = self.last_token(spec)
-                self.day = int(token) if token else None
+                if spec[0] == 'w':
+                    token, spec = self.next_token(spec[1:])
+                    token = '0' if token in ['l', 'L'] else token
+                    self.month_week = int(token) - 1 if token else None
+
+                    token, spec = self.last_token(spec)
+                    self.dow = int(token) if token else None
+
+                else:
+                    token, spec = self.last_token(spec)
+                    self.day = int(token) if token else None
+
+        except ValueError:
+            raise ValueError("Error in specifier: " + specifier)
 
         if spec:
             raise ValueError("Error in specifier: " + specifier)
+
+    def __repr__(self: DateMatcher):
+        return repr({k: v for (k, v) in vars(self).items() if v is not None})
 
     # pylint: disable=no-self-use
     def next_token(self: DateMatcher, spec: str) -> Tuple[Optional[str], str]:
         if spec[0] == '-':
             if spec[1] != '-':
-                raise ValueError('Invalid Specifier')
+                raise ValueError('Unable to get token from ' + spec)
 
             return None, spec[2:]
 
-        return spec.split('-', 1)
+        token, spec = spec.split('-', 1)
+
+        return token, spec
 
     # pylint: disable=no-self-use
     def last_token(self: DateMatcher, spec: str) -> Tuple[Optional[str], str]:
@@ -85,25 +93,36 @@ class DateMatcher:
     def matches(self: DateMatcher, day: date) -> bool:
         _, iso_week, dow = day.isocalendar()
 
-        if self.year and self.year != day.year:
-            return False
+        result = True
 
-        if self.month and self.month != day.month:
-            return False
+        if self.year is not None and self.year != day.year:
+            result = False
 
-        if self.iso_week and self.iso_week != iso_week:
-            return False
+        if self.month is not None and self.month != day.month:
+            result = False
 
-        if self.month_week:
-            raise Exception("I have not implemented month weeks")
+        if self.iso_week is not None and self.iso_week != iso_week:
+            result = False
 
-        if self.dow and self.dow != dow:
-            return False
+        if self.month_week is not None:
+            if self.month_week == -1:
+                _, days = calendar.monthrange(day.year, day.month)
 
-        if self.day and self.day != date.day:
-            return False
+                if day.day <= days - 7:
+                    result = False
+            else:
+                week = self.month_week * 7
 
-        return True
+                if day.day < week or day.day >= week + 8:
+                    result = False
+
+        if self.dow is not None and self.dow != dow:
+            result = False
+
+        if self.day is not None and self.day != date.day:
+            result = False
+
+        return result
 
 
 def get_formats() -> Generator[DateMatcher, None, None]:
